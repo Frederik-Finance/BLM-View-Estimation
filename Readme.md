@@ -3,7 +3,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
-![Last Commit](https://img.shields.io/github/last-commit/yourusername/Performance-Analysis)
+![Last Commit](https://img.shields.io/github/last-commit/Frederik-Finance/BLM-View-Estimation)
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -76,6 +76,21 @@ The performance comparison between LSTM and ARIMA models across various ETFs rev
 - **MAPE**: 8.62%
 - **Insights**: Larger confidence intervals reflecting higher sector volatility.
 
+### LSTM Performance Reflection
+
+The relatively high volatility in LSTM predictions and higher errors stem from a key limitation in the approach, namely that this is modeled as a regression problem because continuous values are needed to construct Black-Litterman Model (BLM) views.
+
+The inherent challenge with this approach is that it leads to the LSTM paying the most attention to market events that should receive the least attention: outlier events caused by extraneous factors. Since the LSTM only has price-based features, it lacks contextual information to learn from these external events, negatively impacting its performance.
+
+While the implementation of a Huber loss function provides some mitigation, the core problem persists. Potential improvements could include:
+
+1. Expanding the feature set with domain-specific features for each ETF
+2. Modeling the LSTM as a classification problem in scenarios where continuous values aren't required
+3. Incorporating external market event data to provide context for outlier movements
+
+However, these enhancements were outside the scope of this project's initial implementation.
+
+
 ### Strategy Performance
 ![Strategy Performance](/images/blm_outperformance.png)
 
@@ -92,19 +107,6 @@ The ETF selection strategy shows significant outperformance versus the benchmark
 - **Impact on Portfolio Allocation**
 - **Performance Improvements Over Baseline**
 
-### LSTM Performance Reflection
-
-The relatively high volatility in LSTM predictions and higher errors stem from a key limitation in the approach, namely that this is modeled as a regression problem because continuous values are needed to construct Black-Litterman Model (BLM) views.
-
-The inherent challenge with this approach is that it leads to the LSTM paying the most attention to market events that should receive the least attention: outlier events caused by extraneous factors. Since the LSTM only has price-based features, it lacks contextual information to learn from these external events, negatively impacting its performance.
-
-While the implementation of a Huber loss function provides some mitigation, the core problem persists. Potential improvements could include:
-
-1. Expanding the feature set with domain-specific features for each ETF
-2. Modeling the LSTM as a classification problem in scenarios where continuous values aren't required
-3. Incorporating external market event data to provide context for outlier movements
-
-However, these enhancements were outside the scope of this project's initial implementation.
 
 ## Critical Analysis & Reflections
 
